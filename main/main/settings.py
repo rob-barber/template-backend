@@ -39,7 +39,7 @@ else:
     # Quick-start development settings - unsuitable for production
     # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
     SECRET_KEY = '2l#hds^am9qac0fr++sln%c5p^6*7mq4*z4epyy=dwo5-j(anj'
-    SERVER_BASE_URL = ''
+    SERVER_BASE_URL = 'http://127.0.0.1:8000'
     ALLOWED_HOSTS = ['*']
     #endregion
 

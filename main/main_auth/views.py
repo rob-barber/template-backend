@@ -96,9 +96,9 @@ class PasswordRecovery(generics.GenericAPIView):
         confirm_password = request.data['confirm_password']
         token = request.data['token']
 
-        user, is_error = validate_oauth_token(token)
+        user = validate_oauth_token(token)
 
-        if is_error:
+        if user is None:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         if (password and confirm_password) is None:
@@ -151,6 +151,8 @@ def register_app_user(request):
     Takes certain parameters within the request and creates a new user. This function is catered towards app users since
     they will not have a CSRF token.
 
+    NOTE: This uses basic authentication. A default user needs to be seeded within the database for this to work.
+
     The following request parameters are required.:
     "email": string,                # This will be the username of the new user
     "password": string,             # The password for the user
@@ -199,7 +201,10 @@ def register_app_user(request):
 
 
     # finally send out the activation email
-    send_activation_email(user)
+    success = send_activation_email(user)
+
+    if not success:
+        return Response('Could not send email', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response(f'Success. An activation email has been sent to: {email}', status=status.HTTP_201_CREATED)
 
@@ -264,7 +269,10 @@ def forgot_password(request):
     except user_model.DoesNotExist:
         return Response('No user with that email is registered', status=status.HTTP_404_NOT_FOUND)
 
-    send_password_recovery_email(user)
+    success = send_password_recovery_email(user)
+
+    if not success:
+        return Response('Error sending email.', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response('Recovery email sent', status=status.HTTP_200_OK)
 

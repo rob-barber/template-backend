@@ -63,7 +63,7 @@ def send_password_recovery_email(user):
     :return:
     """
     if user.email is None:
-        return -1
+        return False
 
     # TODO: Set to correct app name when Oauth Toolkit is set up
     oauth_app = Application.objects.get(name=settings.APP_NAME)
@@ -80,7 +80,7 @@ def send_password_recovery_email(user):
     # Use a reverse url lookup to set the link (this allows us to not worry about hard coding the url if it changes)
     link = settings.SERVER_BASE_URL + \
            reverse(
-               'main_auth:get_password_recovery',
+               'main_auth:update_password',
                kwargs={'token': oauth_token},
                current_app='main_auth')
 
@@ -95,9 +95,9 @@ def send_password_recovery_email(user):
             fail_silently=False,
         )
     except SMTPException:
-        return -1
+        return False
 
-    return 1
+    return True
 
 
 def validate_oauth_token(token):
