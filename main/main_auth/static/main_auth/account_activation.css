@@ -1,0 +1,197 @@
+body {
+    box-sizing: border-box;
+    background-color:lightgray;
+}
+
+/* The card with rounded corners */
+.main-div {
+    position: absolute;
+    height: 280px;
+    width: 400px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(26,35,78);
+    box-shadow: 2px 2px 8px 2px rgba(0,0,0,0.5);
+    border-radius: 15px;
+}
+
+.title {
+    margin: 15px 0 0 0;
+    font-family: Nunito;
+    font-size: 1.5rem;
+    font-weight: lighter;
+    color: white;
+    text-align: center;
+}
+
+.bytext {
+    margin: 2px 0 0 0;
+    font-family: Nunito;
+    font-size: 0.9rem;
+    font-weight: lighter;
+    color: white;
+    text-align: center;
+}
+
+.card {
+    display: inline-block;
+    max-width: 200px;
+    max-height: 100px;
+    margin-left: 10px;
+}
+
+.content-div {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    position: absolute;
+    top: 55%;
+    transform: translateY(-50%);
+}
+
+.usertext {
+    display: block;
+    padding: 10px;
+    font-family: Nunito;
+    font-size: 0.9rem;
+    text-align: center;
+    word-break: break-word;
+    color: white;
+}
+
+.logo {
+    max-height: 50px;
+    max-width: 50px;
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    transform: translate(-65px, -55px);
+}
+
+
+
+/* Media Queries Phones @2x pixel density */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+
+    /* The card with rounded corners */
+    .main-div {
+        position: absolute;
+        height: 680px;
+        width: 900px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(26,35,78);
+        box-shadow: 2px 2px 8px 2px rgba(0,0,0,0.5);
+        border-radius: 15px;
+    }
+
+    .title {
+        font-size: 4rem;
+    }
+
+    .bytext {
+        font-size: 2.9rem;
+    }
+
+    .card {
+        max-width: 300px;
+        max-height: 200px;
+        align-self: center;
+        margin-left: 40px;
+    }
+
+    .content-div {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+
+        position: absolute;
+        top: 55%;
+        transform: translateY(-50%);
+    }
+
+    .usertext {
+        font-size: 2.4rem;
+    }
+
+    .logo {
+        max-height: 150px;
+        max-width: 150px;
+        position: absolute;
+        top: 100%;
+        left: 100%;
+        transform: translate(-180px, -160px);
+    }
+
+}
+
+/* ex. iPhone 6 */
+@media only screen 
+  and (min-device-width: 375px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+
+    /* The card with rounded corners */
+    .main-div {
+        position: absolute;
+        height: 680px;
+        width: 900px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(26,35,78);
+        box-shadow: 2px 2px 8px 2px rgba(0,0,0,0.5);
+        border-radius: 15px;
+    }
+
+    .title {
+        font-size: 4rem;
+    }
+
+    .bytext {
+        font-size: 2.9rem;
+    }
+
+    .card {
+        max-width: 300px;
+        max-height: 200px;
+        align-self: center;
+        margin-left: 40px;
+    }
+
+    .content-div {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+
+        position: absolute;
+        top: 55%;
+        transform: translateY(-50%);
+    }
+
+    .usertext {
+        font-size: 2.4rem;
+    }
+
+    .logo {
+        max-height: 150px;
+        max-width: 150px;
+        position: absolute;
+        top: 100%;
+        left: 100%;
+        transform: translate(-180px, -160px);
+    }
+
+}

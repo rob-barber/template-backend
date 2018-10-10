@@ -2,53 +2,17 @@ from django.conf import settings
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.urls import reverse
-from django.core.exceptions import ValidationError
-from django.db.utils import IntegrityError
-from django.core.validators import EmailValidator
-from django.contrib.auth.password_validation import validate_password
 
 from smtplib import SMTPException
 
 from oauthlib.common import generate_token
 from oauth2_provider.models import Application, AccessToken
 
-def validate_create_user_request(request):
-    """
-    This validates all the data coming into the "create_user" view data. It collects a list of errors and
-    returns them to the caller along with a few variables for convenience.
-
-    This expects the following inside the request.data list
-    request.data['email']
-    request.data['password']
-
-    :param request: The Django Rest Framework request object sent from the client.
-    :return: tuple, (validationSuccessful, errorArray). errorArray will only be populated if validationSuccessful is False
-    """
-    email = request.data['email'] if ('email' in request.data) else None
-    password = request.data['password'] if ('password' in request.data) else None
-
-    errors = []  # populate with a list of error messages
-
-    if not (email and password):
-        errors.append('Required data not set')
-
-    # Validate email and password
-    try:
-        EmailValidator().__call__(email)
-        validate_password(password)
-    except ValidationError as e:
-        errors.extend(e.messages)
-    except TypeError:
-        # password has not been sent to the validate_password will throw a TypeError
-        pass
-
-
-    return (True, errors) if len(errors) == 0 else (False, errors)
-
-
 def send_activation_email(user):
     """
     Sends an activation email to the user with a link that will direct them to the activation web page
+
+    This function uses the Django Oauth Toolkit's token database for creating this temporary token.
 
     :param user: The user object containing the email address to send the email to.
     :return: True if successful, False otherwise.
@@ -57,23 +21,21 @@ def send_activation_email(user):
     if user.email is None:
         return False
 
-    # TODO: Set to correct app name when Oauth Toolkit is set up
     oauth_app = Application.objects.get(name=settings.APP_NAME)
 
     oauth_token = generate_token()
 
-
     AccessToken.objects.create(
         user=user,
         application=oauth_app,
-        expires=timezone.now() + timezone.timedelta(seconds= settings.RESET_PASSWORD_TOKEN_EXPIRE_SECONDS),
+        expires=timezone.now() + timezone.timedelta(seconds= settings.ACTIVATE_ACCOUNT_TOKEN_EXPIRE_SECONDS),
         token=oauth_token
     )
 
     # Use a reverse url lookup to set the link (this allows us to not worry about hard coding the url if it changes)
     link = settings.SERVER_BASE_URL + \
            reverse(
-               'main_app:user_activation',
+               'main_auth:user_activation',
                kwargs={'token': oauth_token},
                current_app=settings.APP_NAME)
 
@@ -104,23 +66,23 @@ def send_password_recovery_email(user):
         return -1
 
     # TODO: Set to correct app name when Oauth Toolkit is set up
-    oauth_app = Application.objects.get(name='mogabi')
+    oauth_app = Application.objects.get(name=settings.APP_NAME)
 
     oauth_token = generate_token()
 
     AccessToken.objects.create(
         user=user,
         application=oauth_app,
-        expires=timezone.now() + timezone.timedelta(days=1),
+        expires=timezone.now() + timezone.timedelta(seconds=settings.RESET_PASSWORD_TOKEN_EXPIRE_SECONDS),
         token=oauth_token
     )
 
     # Use a reverse url lookup to set the link (this allows us to not worry about hard coding the url if it changes)
     link = settings.SERVER_BASE_URL + \
            reverse(
-               'main_app:get_password_recovery',
+               'main_auth:get_password_recovery',
                kwargs={'token': oauth_token},
-               current_app='main_app')
+               current_app='main_auth')
 
     try:
         send_mail(
@@ -145,18 +107,15 @@ def validate_oauth_token(token):
     :param token: The oauth token to validate
     :return: The user object if the token is valid, None otherwise
     """
-    is_error = False
-
     if token is None:
-        is_error = True
+        return None
 
     app = Application.objects.get(name=settings.APP_NAME)
 
     try:
         activation_token = AccessToken.objects.get(token=token, application=app)
     except AccessToken.DoesNotExist:
-        is_error = True  # just being explicit here
-        return None, is_error  # we cannot really go any further without the token
+        return None # we cannot really go any further without the token
 
     now = timezone.now()
 

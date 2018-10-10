@@ -15,31 +15,42 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2l#hds^am9qac0fr++sln%c5p^6*7mq4*z4epyy=dwo5-j(anj'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# Default to allowing all hosts for mobile applications.
-ALLOWED_HOSTS = ['*']
+if DEBUG is False:
+    # region Production Settings
+    # Import this key from an OS variable to increase security
+    with open('/etc/django_secrets/service_backend_secret.txt', 'rt') as f:
+        SECRET_KEY = f.read().strip()
+
+    SERVER_BASE_URL = 'http://192.168.1.152'
+    ALLOWED_HOSTS = ['*']  # Only allow all if you are dealing with mobile apps or API access to third parties.
+    CSRF_COOKIE_SECURE = True  # Means browsers may ensure that https is used in cookie transmission
+    SESSION_COOKIE_SECURE = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent browsers from guessing content type header
+    SECURE_BROWSER_XSS_FILTER = True  # https://docs.djangoproject.com/en/1.11/ref/middleware/#x-content-type-options
+    X_FRAME_OPTIONS = 'DENY'
+
+
+    # endregion
+else:
+    #region Debug Settings
+    # Quick-start development settings - unsuitable for production
+    # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
+    SECRET_KEY = '2l#hds^am9qac0fr++sln%c5p^6*7mq4*z4epyy=dwo5-j(anj'
+    SERVER_BASE_URL = ''
+    ALLOWED_HOSTS = ['*']
+    #endregion
 
 # Add your app name here. This will be used in various areas of the application.
 APP_NAME = 'main'
 
-
-
-if DEBUG:
-    SERVER_BASE_URL = 'http://192.168.1.152'
-else:
-    # TODO: Add base URL here for production
-    SERVER_BASE_URL = ''
-
 OAUTH_APP_NAME = APP_NAME
+
+# Uncomment and update if you are using a custom user object.
+# AUTH_USER_MODEL = 'main.User'
+
 
 # Application definition
 
@@ -163,8 +174,6 @@ EMAIL_HOST_PASSWORD = NO_REPLY_EMAIL_PASS
 #region Security Configuration
 SESSION_COOKIE_AGE = 86400  # One day in seconds
 
-AUTH_USER_MODEL = 'main_app.User'
-
 AUTHENTICATION_BACKENDS = [
     'oauth2_provider.backends.OAuth2Backend',
     'social_core.backends.facebook.FacebookOAuth2',
@@ -180,7 +189,7 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ),
 
     'DEFAULT_PERMISSION_CLASSES': (
@@ -188,7 +197,10 @@ REST_FRAMEWORK = {
     )
 }
 
-RESET_PASSWORD_TOKEN_EXPIRE_SECONDS = 604800 # 7 days (in seconds)
+ACTIVATE_ACCOUNT_TOKEN_EXPIRE_SECONDS = 604800 # 7 days (in seconds)
+RESET_PASSWORD_TOKEN_EXPIRE_SECONDS = 86400 # 1 day (in seconds)
+
+# Also used by Oauth Toolkit
 ACCESS_TOKEN_EXPIRE_SECONDS = 2592000 # 30 days (in seconds) Also used for manually creating a token.
 
 OAUTH2_PROVIDER = {
