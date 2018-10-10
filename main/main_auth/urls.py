@@ -4,7 +4,6 @@ from . import views
 app_name = 'main_auth'
 urlpatterns = [
 
-    path('<str:other>/', views.index),
     path('register/', views.UserRegister.as_view(), name='register_user'),
     path('register_app/', views.register_app_user, name='register_app_user'),
 
