@@ -218,6 +218,8 @@ SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'last_name', '
 # App ID from Facebook "manage apps" portal
 SOCIAL_AUTH_FACEBOOK_KEY = ''
 
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
 # App Secret from the Facebook "manage apps" portal
 SOCIAL_AUTH_FACEBOOK_SECRET = ''
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'public_profile']

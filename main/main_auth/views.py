@@ -360,7 +360,3 @@ def social_register_or_login(request, backend):
         return Response(json_data, status=status.HTTP_201_CREATED)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-def social_endpoint(request):
-    return render(request, 'main_auth/social_start.html')
