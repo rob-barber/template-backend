@@ -140,7 +140,7 @@ class PasswordRecovery(generics.GenericAPIView):
 
         # TODO: return confirmation page
         # Because there is no serializer for this class we can't use the "Render" function
-        return HttpResponse('Password Saved', status=status.HTTP_200_OK)
+        return render(request, "main_auth/password_recovery_success.html")
 
 
 @api_view(['POST'])

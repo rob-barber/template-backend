@@ -54,6 +54,7 @@ OAUTH_APP_NAME = APP_NAME
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -165,7 +166,7 @@ ACTIVATION_EMAIL_MESSAGE = 'Please click the link below to activate your account
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_SSL = True
-EMAIL_HOST = '' # Example smtp.zoho.com
+EMAIL_HOST = ''  # Example smtp.zoho.com
 EMAIL_PORT = 465
 EMAIL_HOST_USER = NO_REPLY_EMAIL
 EMAIL_HOST_PASSWORD = NO_REPLY_EMAIL_PASS
@@ -216,12 +217,12 @@ OAUTH2_PROVIDER = {
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'last_name', 'email']
 
 # App ID from Facebook "manage apps" portal
-SOCIAL_AUTH_FACEBOOK_KEY = ''
+SOCIAL_AUTH_FACEBOOK_KEY = '1893381280931970'
 
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 
 # App Secret from the Facebook "manage apps" portal
-SOCIAL_AUTH_FACEBOOK_SECRET = ''
+SOCIAL_AUTH_FACEBOOK_SECRET = '1304758cb766b515ba4117faa96c7dd0'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', 'public_profile']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   # 'locale': 'ru_RU',
