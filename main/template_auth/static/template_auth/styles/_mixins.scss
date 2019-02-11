@@ -1,0 +1,50 @@
+
+/**
+    The main content area of all the register/login screens. This makes it so
+    the content is shown centered on screen.
+*/
+@mixin auth-content-container() {
+    position: absolute;
+    top: 40vh;
+    left: 50vw;
+    width: 400px;
+    transform: translate(-50%, -50%);
+}
+
+@mixin auth-content-title() {
+    font-family: $font-primary;
+    color: $color-text-light;
+
+    font-size: 2rem;
+    font-weight: lighter;
+}
+
+@mixin auth-content-sub-title {
+    color: $color-text-light;
+    font-family: $font-primary;
+    font-size: 1.1rem;
+    font-weight: lighter;
+    text-align: center;
+}
+
+@mixin auth-content-submit {
+    padding: 10px 35px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: $color-primary-dark;
+    font-weight: lighter;
+}
+
+/**
+    This is the button underneath the main form button on the auth screens.
+    Primarily this is a plain text link that leads to another page. Usually this is
+    a "Login" button.
+*/
+@mixin auth-content-secondary-button {
+    display: block;
+    color: $color-text-light;
+    font-family: $font-primary;
+    font-weight: lighter;
+    margin-top: 10px
+}

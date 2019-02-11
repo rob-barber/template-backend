@@ -66,7 +66,10 @@ INSTALLED_APPS = [
     'social_django',
     'corsheaders',
     'rest_framework',
-    'main_auth.apps.MainAuthConfig'
+    'sass_processor',
+    'widget_tweaks',
+    'sslserver',
+    'template_auth.apps.TemplateAuthConfig'
 ]
 
 MIDDLEWARE = [
@@ -103,8 +106,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
-
-#region Database
+# region Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
@@ -112,10 +114,18 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}
-#endregion
 
-#region Password Validators
+    # # Live database credentials DigitalOcean
+    # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    # 'NAME': 'queen_city',
+    # 'USER': 'queen_city',
+    # 'PASSWORD': '*hamster-puddle2016*',
+    # 'HOST': 'localhost',
+    # 'PORT': '5432',
+}
+# endregion
+
+# region Password Validators
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -132,9 +142,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-#endregion
+# endregion
 
-#region Language and Timezone Configuration
+# region Language and Timezone Configuration
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -147,14 +157,35 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-#endregion
+# endregion
 
-#region Static files (CSS, JavaScript, Images)
+# region Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+]
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-#endregion
+STATICFILES_DIRS = [
+    # We are adding the node modules for all frontend functionality
+    ('node_modules', os.path.join(BASE_DIR, "node_modules/")),
+    # ('shared_static', os.path.join(BASE_DIR, "shared_static")),
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+SASS_PROCESSOR_ROOT = STATIC_ROOT  # For the Django SASS Processor
+NODE_MODULES_URL = STATIC_URL + 'node_modules/'
+
+SASS_PROCESSOR_INCLUDE_DIRS = [
+    os.path.join(BASE_DIR, 'shared_static'),
+]
+# endregion
 
 #region Email and Default Email Values Configuration
 # Email address, and password, to send password recovery emails from.
@@ -170,9 +201,9 @@ EMAIL_HOST = ''  # Example smtp.zoho.com
 EMAIL_PORT = 465
 EMAIL_HOST_USER = NO_REPLY_EMAIL
 EMAIL_HOST_PASSWORD = NO_REPLY_EMAIL_PASS
-#endregion
+# endregion
 
-#region Security Configuration
+# region Security Configuration
 SESSION_COOKIE_AGE = 86400  # One day in seconds
 
 AUTHENTICATION_BACKENDS = [
@@ -202,7 +233,7 @@ ACTIVATE_ACCOUNT_TOKEN_EXPIRE_SECONDS = 604800 # 7 days (in seconds)
 RESET_PASSWORD_TOKEN_EXPIRE_SECONDS = 86400 # 1 day (in seconds)
 
 # Also used by Oauth Toolkit
-ACCESS_TOKEN_EXPIRE_SECONDS = 2592000 # 30 days (in seconds) Also used for manually creating a token.
+ACCESS_TOKEN_EXPIRE_SECONDS = 2592000  # 30 days (in seconds) Also used for manually creating a token.
 
 OAUTH2_PROVIDER = {
     # this is the list of available scopes
@@ -210,9 +241,9 @@ OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': ACCESS_TOKEN_EXPIRE_SECONDS,   # 30 days (in seconds)
     'REFRESH_TOKEN_EXPIRE_SECONDS': 5184000,  # 60 days (in seconds)
 }
-#endregion
+# endregion
 
-#region Social Login Providers Configuration
+# region Social Login Providers Configuration
 # Customize for whatever Facebook fields are necessary for logging in.
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'last_name', 'email']
 
@@ -228,4 +259,4 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   # 'locale': 'ru_RU',
   'fields': 'id, name, email'
 }
-#endregion
+# endregion

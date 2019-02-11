@@ -1,0 +1,13 @@
+
+#footer {
+    position:absolute;
+    top: 100vh;
+    left:0;
+    transform: translateY(-100%);
+    padding: 15px;
+
+    a {
+        display:block;
+        color: $color-text-light;
+    }
+}

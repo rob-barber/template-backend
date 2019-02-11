@@ -1,0 +1,18 @@
+
+body {
+    background-color: $color-primary;
+}
+
+.logo-container {
+
+    padding: 15px;
+
+    a {
+        display: block;
+        font-size: 1.5rem;
+        font-family: $font-primary;
+        color: $color-text-light;
+
+    }
+}
+

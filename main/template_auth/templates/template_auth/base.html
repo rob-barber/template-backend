@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load sass_tags %}
+
+<head>
+    {# This area is used for any shared header tag content like meta tags etc... #}
+    <meta charset="UTF-8">
+    <title>Production Platform</title>
+
+    {# Import fonts #}
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="{% sass_src 'platform_auth/styles/index.scss' %}"/>
+    
+</head>
+    <body>
+
+        {#  Generic modal to use for alerts etc...  #}
+        {% include 'template_auth/components/modal.html' %}
+
+        <div class="container-fluid logo-container">
+            <div class="row">
+                <a class="col-auto" href="{% url 'landing_site:home' %}">Logo Here</a>
+            </div>
+        </div>
+
+
+        {% block body %}
+        {% endblock %}
+
+        {#  Only show the footer when appropriate (i.e. T&C's + Privacy Policy links  #}
+        {% if footer %}
+            {% include 'template_auth/footer.html' %}
+        {% endif %}
+
+        {# Scripts #}
+        {# jQuery, Popper and Bootstrap javascript CDN.#}
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+                integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+                integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+        <script type="application/javascript" src="{% static 'template_auth/scripts/django_helper.js' %}"></script>
+        <script type="application/javascript" src="{% static 'template_auth/scripts/modal_helper.js' %}"></script>
+
+        {# Scripts to include in subclass templates #}
+        {% block scripts %}
+        {% endblock %}
+
+    </body>
+</html>

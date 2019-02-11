@@ -1,0 +1,26 @@
+@mixin spinner($color: white, $size: 20px, $width: 2px) {
+    display: none;
+
+    border: $width solid transparent;
+    border-top: $width solid $color;
+    border-bottom: $width solid $color;
+    border-right: $width solid $color;
+    border-radius: $size;
+    width: $size;
+    height: $size;
+    animation: spin 1s linear infinite;
+}
+
+.spinner {
+    @include spinner();
+}
+
+.spinner.active {
+    display: block !important;
+}
+
+// Spins the spinner.
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,22 @@
+
+{% extends 'template_auth/base.html' %}
+
+{% block body %}
+
+    <div class="register container">
+
+        <div class="row justify-content-center">
+            <p class="register-title col-auto">Create Account</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+
+
+
+        </form>
+
+    </div>
+
+{% endblock %}

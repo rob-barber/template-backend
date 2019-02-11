@@ -1,0 +1,51 @@
+{% extends 'template_auth/base.html' %}
+{% load widget_tweaks %}
+
+{% block body %}
+
+    <div class="login-content container">
+
+        <div class="row justify-content-center">
+            <p class="col-auto login-title">
+                Login To Your Account
+            </p>
+        </div>
+
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+
+        <form role="form"
+              method="post"
+              action="{% url 'platform_auth:login' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                {% render_field form.username class="form-control" placeholder="Email" %}
+            </div>
+
+            <div class="form-group">
+                {% render_field form.password class="form-control" placeholder="Password" %}
+            </div>
+
+            <button type="submit" class="btn btn-primary login-submit">Login</button>
+        </form>
+
+        <div class="row justify-content-center">
+            <a href="{% url 'platform_auth:forgot_password' %}" class="col-auto login-forgot-password">Forgot Password</a>
+        </div>
+
+        {#  New User signup link  #}
+        <div class="container login-register-container">
+            <div class="row justify-content-center">
+                <p class="col-auto login-new-user-text">New User?</p>
+            </div>
+            <div class="row justify-content-center">
+                <a class="col-auto login-register-link" href="">Register</a>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

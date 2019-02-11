@@ -1,0 +1,38 @@
+
+
+.login-content {
+
+    @include auth-content-container();
+
+    .login-title {
+        @include auth-content-title();
+    }
+
+    .login-submit {
+        margin-top: 10px;
+        @include auth-content-submit();
+    }
+
+    .login-forgot-password {
+        @include auth-content-secondary-button();
+    }
+
+    .login-register-container {
+        position: relative;
+        top: 50px;
+    }
+
+    .login-new-user-text {
+        margin-bottom: 5px;
+        color: $color-text-light;
+        font-family: $font-primary;
+        font-size: 1.4rem;
+    }
+
+    .login-register-link {
+        color: $color-text-light;
+        font-family: $font-primary;
+        font-weight: lighter;
+    }
+
+}
